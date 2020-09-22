@@ -18,16 +18,27 @@ console.log(argo)
  * 返回格式
  * [{
  *  name: '',
- *  path: ''
+ *  path: '',
+ *  subtitle: '',
+ *  select: '',
+ *  attr:''
  * }]
  */
 const urls = require("./urls")() // 获取url的方法,请自定义吧
 
 console.log(urls)
 
-require("./util/makeDir")(path.join(argo['-path'] || __dirname, 'download'))
+const download_dir = path.join(argo['-path'] || __dirname, 'download')
+const makeDir = require("./util/makeDir")
+
+makeDir(download_dir)
     .then(res => {
-        console.log(res)
+        // console.log(res)
+        // 遍历urls进行下载
+        urls.forEach((ele, index) => {
+            require("./dlpics")(ele.path, path.join(download_dir, ele.name || ('folder' + index)), ele.subtitle, ele.select, ele.attr)
+           
+        })
     })
     .catch(err => {
         console.log(err)
