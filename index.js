@@ -2,6 +2,7 @@
 // exec('explorer /select, "c:\windows"')
 
 const path = require("path")
+const { url } = require("inspector")
 const argv = process.argv.splice(2) // 获取命令行参数,保存的地址
 
 const argo = {}
@@ -13,7 +14,11 @@ argv.forEach(arg => {
         argo[temp_arr[0]] = true
     }
 })
-console.log(argo)
+
+const ora = require("./util/ora")({
+    text: 'load'
+})
+ora.start()
 /**
  * 返回格式
  * [{
@@ -24,24 +29,35 @@ console.log(argo)
  *  attr:''
  * }]
  */
-const urls = require("./urls")() // 获取url的方法,请自定义吧
-
-console.log(urls)
-
 const download_dir = path.join(argo['-path'] || __dirname, 'download')
-const makeDir = require("./util/makeDir")
+// ora.text = 'loading......dowload folder is: ' + download_dir
+ require("./urls")()
+    .then(urls => {
+        // console.log(urls)
+        // require("fs").writeFile('./urls.json', JSON.stringify(urls), function() {
+        //     console.log('write successed')
+        // })
+        // return
+        console.log('共' + urls.length + '个图片页面')
+        require("./util/makeDir")(download_dir)
+            .then(res => {
+                console.log('创建' + download_dir + '文件夹')
+                // ora.text = 'loading...... ' + res
+                urls.forEach((ele, index) => {
+                    require("./dlpics")
+                        (ele.path, 
+                        path.join(download_dir, ele.name || ('folder' + index)),
+                        ele.subtitle, 
+                        ele.select, 
+                        ele.attr).then(res => {
+                            ora.stop()
+                        })
+                })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    })
 
-makeDir(download_dir)
-    .then(res => {
-        // console.log(res)
-        // 遍历urls进行下载
-        urls.forEach((ele, index) => {
-            require("./dlpics")(ele.path, path.join(download_dir, ele.name || ('folder' + index)), ele.subtitle, ele.select, ele.attr)
-           
-        })
-    })
-    .catch(err => {
-        console.log(err)
-    })
 
 

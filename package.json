@@ -1,0 +1,28 @@
+{
+  "name": "picdownload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "got": "^11.6.1",
+    "ora": "^5.1.0",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.9.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yinyangshibolange/download-pictures.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yinyangshibolange/download-pictures/issues"
+  },
+  "homepage": "https://github.com/yinyangshibolange/download-pictures#readme"
+}

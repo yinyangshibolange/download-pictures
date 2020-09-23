@@ -1,5 +1,5 @@
 
-export default class LimitPromise {
+module.exports = class LimitPromise {
     constructor(max) {
         this.max = max // 异步任务上限
         this._taskQueue = [] // 任务队列
@@ -21,7 +21,7 @@ export default class LimitPromise {
 
     _createStack(caller, args, resolve, reject) {
         return () => {
-            caller(args)
+            caller(...args)
                 .then(resolve)
                 .catch(reject)
                 .finally(() => {
